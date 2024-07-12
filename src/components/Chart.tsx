@@ -4,13 +4,29 @@ import "chart.js/auto";
 
 interface ChartProps {
   data: number[];
+  volume: number[];
 }
 
-const Chart: React.FC<ChartProps> = ({ data }) => {
+const Chart: React.FC<ChartProps> = ({ data, volume }) => {
+  const maxVolume = Math.max(...volume);
+  const normalizedVolume = volume.map((v) => (v / maxVolume) * 10); // Normalize volume data
+
   const chartData = {
     labels: Array(data.length).fill(""),
     datasets: [
       {
+        type: "bar",
+        label: "Volume",
+        data: normalizedVolume,
+        backgroundColor: "#EFF1F3",
+        borderColor: "#EFF1F3",
+        borderWidth: 1,
+        barPercentage: 0.3,
+        // categoryPercentage: 0.1,
+        yAxisID: "y1",
+      },
+      {
+        type: "line",
         label: "Value",
         data: data,
         fill: "start",
@@ -25,6 +41,7 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
         pointRadius: 0,
         borderWidth: 2,
         tension: 0.1,
+        yAxisID: "y",
       },
     ],
   };
@@ -33,6 +50,10 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
     scales: {
       y: {
         display: false,
+      },
+      y1: {
+        display: false,
+        max: 100,
       },
       x: {
         grid: {
@@ -56,8 +77,14 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex relative mt-4 h-[350px] border-l border-r border-b w-[700px]">
+    <div className="relative mt-4 h-[350px] w-[700px] border-l border-r border-b">
       <Line data={chartData} options={options} />
+      <div className="absolute top-0 right-0 mt-2 mr-2 bg-blue-500 text-white text-sm px-2 py-1 rounded shadow">
+        64,850.35
+      </div>
+      <div className="absolute bottom-0 right-0 mb-2 mr-2 bg-blue-700 text-white text-sm px-2 py-1 rounded shadow">
+        63,179.71
+      </div>
     </div>
   );
 };

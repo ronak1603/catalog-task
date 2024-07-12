@@ -81,7 +81,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex">
-          <Chart data={data.weeklyData} />
+          <Chart data={data.weeklyData} volume={data.weeklyData} />
           <div className="relative flex flex-col gap-2 items-center">
             <span className="bg-[#1A243A] absolute top-20 rounded px-2 py-1 text-white">
               64850.71
