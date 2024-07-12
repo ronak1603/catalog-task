@@ -5,28 +5,13 @@ import type { ChartData, ChartDataset } from "chart.js";
 
 interface ChartProps {
   data: number[];
-  volume: number[];
 }
 
-const Chart: React.FC<ChartProps> = ({ data, volume }) => {
-  const maxVolume = Math.max(...volume);
-  const normalizedVolume = volume.map((v) => (v / maxVolume) * 10); // Normalize volume data
-
-  const chartData: ChartData<"line" | "bar", number[], any> = {
+const Chart: React.FC<ChartProps> = ({ data }) => {
+  const chartData = {
     labels: Array(data.length).fill(""),
     datasets: [
       {
-        type: "bar",
-        label: "Volume",
-        data: normalizedVolume,
-        backgroundColor: "#EFF1F3",
-        borderColor: "#EFF1F3",
-        borderWidth: 1,
-        barPercentage: 0.3,
-        yAxisID: "y1",
-      } as ChartDataset<"bar", number[]>,
-      {
-        type: "line",
         label: "Value",
         data: data,
         borderColor: "#4B40EE",
@@ -39,8 +24,7 @@ const Chart: React.FC<ChartProps> = ({ data, volume }) => {
         },
         borderWidth: 2,
         tension: 0.1,
-        yAxisID: "y",
-      } as ChartDataset<"line", number[]>,
+      },
     ],
   };
 
@@ -48,10 +32,6 @@ const Chart: React.FC<ChartProps> = ({ data, volume }) => {
     scales: {
       y: {
         display: false,
-      },
-      y1: {
-        display: false,
-        max: 100,
       },
       x: {
         grid: {
@@ -75,7 +55,7 @@ const Chart: React.FC<ChartProps> = ({ data, volume }) => {
   };
 
   return (
-    <div className="relative mt-4 h-[350px] w-[700px] border-l border-r border-b">
+    <div className="flex relative mt-4 h-[350px] border-l border-r border-b w-[700px]">
       <Line data={chartData} options={options} />
     </div>
   );
